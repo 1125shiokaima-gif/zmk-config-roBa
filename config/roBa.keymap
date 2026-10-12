@@ -80,6 +80,7 @@
         tab {
             bindings = <&kp TAB>;
             key-positions = <11 12>;
+            layers = <0>;
         };
 
         layer4_ESC {

@@ -65,8 +65,6 @@
         18 // J
         19 // K
         20 // L
-        30 // M
-        32 // Dot
         34 // Ctrl-click
         35 // GUI modifier
         36 // Alt modifier
@@ -220,7 +218,7 @@
             bindings = <
 &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans
 &trans  &trans    &trans    &trans    &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
-&trans  &trans    &trans    &trans    &trans  &trans      &trans  &trans  &mkp MB4  &trans    &mkp MB5  &trans
+&trans  &trans    &trans    &trans    &trans  &trans      &trans  &trans  &trans    &trans    &trans    &trans
 &trans  &trans    &trans    &trans    &trans  &trans      &trans  &trans                                &trans
             >;
 

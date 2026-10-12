@@ -10,12 +10,35 @@
 #define MOUSE 5
 #define SCROLL 6
 
+// HID positions for a Windows Japanese (106/109) host layout.
+#define JIS_AT LEFT_BRACKET
+#define JIS_LBKT RIGHT_BRACKET
+#define JIS_RBKT NON_US_HASH
+#define JIS_LBRC LS(JIS_LBKT)
+#define JIS_RBRC LS(JIS_RBKT)
+#define JIS_LPAR LS(N8)
+#define JIS_RPAR LS(N9)
+#define JIS_COLON SQT
+#define JIS_ASTERISK LS(JIS_COLON)
+#define JIS_PLUS LS(SEMICOLON)
+#define JIS_EQUAL LS(MINUS)
+#define JIS_AMPERSAND LS(N6)
+#define JIS_APOSTROPHE LS(N7)
+#define JIS_DQUOTE LS(N2)
+#define JIS_CARET EQUAL
+#define JIS_GRAVE LS(JIS_AT)
+#define JIS_TILDE LS(JIS_CARET)
+#define JIS_BACKSLASH INT1
+#define JIS_UNDERSCORE LS(JIS_BACKSLASH)
+#define JIS_PIPE LS(INT3)
+
 &mt {
     flavor = "balanced";
     quick-tap-ms = <0>;
 };
 
 &lt {
+    tapping-term-ms = <200>;
     quick-tap-ms = <300>;
     flavor = "balanced";
 };
@@ -44,6 +67,9 @@
         20 // L
         30 // M
         32 // Dot
+        34 // Ctrl-click
+        35 // GUI modifier
+        36 // Alt modifier
     >;
 };
 
@@ -69,9 +95,36 @@
             bindings = <&to 0 &macro_param_1to1 &kp MACRO_PLACEHOLDER>;
             label = "TO_LAYER_0";
         };
+
+        bt_clear_current: bt_clear_current {
+            compatible = "zmk,behavior-macro";
+            #binding-cells = <0>;
+            bindings = <&bt BT_CLR>;
+            label = "BT_CLEAR_CURRENT";
+        };
     };
 
     behaviors {
+        scroll_lt: scroll_layer_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&mo>, <&kp>;
+            tapping-term-ms = <200>;
+            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+            label = "SCROLL_LAYER_TAP";
+        };
+
+        bt_clear_hold: bt_clear_hold {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            bindings = <&bt_clear_current>, <&none>;
+            tapping-term-ms = <1000>;
+            quick-tap-ms = <0>;
+            flavor = "tap-preferred";
+            label = "BT_CLEAR_HOLD";
+        };
+
         lt_to_layer_0: lt_to_layer_0 {
             compatible = "zmk,behavior-hold-tap";
             label = "LAYER_TAP_TO_0";
@@ -102,21 +155,23 @@
         compatible = "zmk,keymap";
 
         default_layer {
+            display-name = "Base - Windows JIS";
             bindings = <
-&kp Q             &kp W         &kp E         &kp R             &kp T                                                          &kp Y          &kp U  &lt 6 I    &kp O    &kp P
-&kp A             &kp S         &kp D         &kp F             &kp G        &kp MINUS                  &trans                 &kp H          &kp J  &kp K      &kp L    &kp SQT
-&mt LEFT_SHIFT Z  &kp X         &kp C         &kp V             &kp B        &lt 4 COLON                &kp SEMICOLON          &kp N          &kp M  &kp COMMA  &kp DOT  &mt LEFT_SHIFT SLASH
-&kp LCTRL         &kp LEFT_GUI  &kp LEFT_ALT  &lt 4 LANG2          &lt 2 SPACE  &lt_to_layer_0 3 LANG1        &kp BACKSPACE          &lt 1 ENTER                              &lt 5 ESC
+&kp Q             &kp W         &kp E         &kp R             &kp T                                                          &kp Y          &kp U  &scroll_lt 6 I  &kp O    &kp P
+&kp A             &kp S         &kp D         &kp F             &kp G        &kp MINUS                  &trans                 &kp H          &kp J  &kp K      &kp L    &kp JIS_APOSTROPHE
+&mt LEFT_SHIFT Z  &kp X         &kp C         &kp V             &kp B        &lt 4 JIS_COLON            &kp SEMICOLON          &kp N          &kp M  &kp COMMA      &kp DOT  &mt LEFT_SHIFT SLASH
+&kp LCTRL         &kp LEFT_GUI  &kp LEFT_ALT  &lt 4 INT_MUHENKAN  &lt 2 SPACE  &lt_to_layer_0 3 INT_HENKAN &kp BACKSPACE          &lt 1 ENTER                                  &lt 5 ESC
             >;
 
             sensor-bindings = <&scroll_up_down>;
         };
 
         layer_1 {
+            display-name = "Symbols - JIS";
             bindings = <
-&kp EXCLAMATION        &kp QUESTION      &kp AT_SIGN   &kp HASH              &kp ASTERISK                           &trans  &kp LEFT_BRACKET  &kp RIGHT_BRACKET      &kp LEFT_PARENTHESIS  &kp RIGHT_PARENTHESIS
-&kp UNDERSCORE         &kp EQUAL         &kp COLON     &kp SEMICOLON         &kp BACKSLASH  &trans    &kp COMMA  &kp DOT           &kp LEFT_BRACE         &kp RIGHT_BRACE        &kp LESS_THAN          &kp GREATER_THAN
-&mt LEFT_SHIFT MINUS   &kp SLASH         &kp PIPE      &kp AMPERSAND         &kp CARET      &kp DOLLAR  &kp PERCENT  &trans          &kp LEFT_BRACKET       &kp RIGHT_BRACKET      &kp SLASH              &kp BACKSLASH
+&kp EXCLAMATION        &kp QUESTION      &kp JIS_AT    &kp HASH              &kp JIS_ASTERISK                       &trans  &kp JIS_LBKT   &kp JIS_RBKT      &kp JIS_LPAR          &kp JIS_RPAR
+&kp JIS_UNDERSCORE     &kp JIS_EQUAL     &kp JIS_COLON &kp SEMICOLON         &kp JIS_BACKSLASH  &trans  &kp COMMA  &kp DOT        &kp JIS_LBRC      &kp JIS_RBRC          &kp LESS_THAN          &kp GREATER_THAN
+&mt LEFT_SHIFT MINUS   &kp SLASH         &kp JIS_PIPE  &kp JIS_AMPERSAND     &kp JIS_CARET     &kp DOLLAR  &kp PERCENT  &kp JIS_TILDE  &kp JIS_APOSTROPHE  &kp JIS_DQUOTE     &kp SLASH              &kp JIS_GRAVE
 &trans                 &trans            &trans        &trans                &trans         &trans    &trans     &trans                                                                          &trans
             >;
 
@@ -124,10 +179,11 @@
         };
 
         layer_2 {
+            display-name = "Numbers";
             bindings = <
-&kp MINUS         &kp KP_NUMBER_7   &kp KP_NUMBER_8   &kp KP_NUMBER_9   &kp PLUS                               &trans       &kp F7        &kp F8        &kp F9        &kp F10
-&kp SLASH         &kp KP_NUMBER_4   &kp KP_NUMBER_5   &kp KP_NUMBER_6   &kp KP_MULTIPLY  &trans          &kp COMMA    &trans        &kp F4        &kp F5        &kp F6        &kp F11
-&kp KP_NUMBER_0   &kp KP_NUMBER_1   &kp KP_NUMBER_2   &kp KP_NUMBER_3   &kp PERIOD       &kp EQUAL       &trans       &trans        &kp F1        &kp F2        &kp F3        &kp F12
+&kp MINUS         &kp NUMBER_7      &kp NUMBER_8      &kp NUMBER_9      &kp JIS_PLUS                           &trans       &kp F7        &kp F8        &kp F9        &kp F10
+&kp SLASH         &kp NUMBER_4      &kp NUMBER_5      &kp NUMBER_6      &kp JIS_ASTERISK  &kp COMMA      &trans       &trans        &kp F4        &kp F5        &kp F6        &kp F11
+&kp NUMBER_0      &kp NUMBER_1      &kp NUMBER_2      &kp NUMBER_3      &kp PERIOD        &kp JIS_EQUAL  &trans       &trans        &kp F1        &kp F2        &kp F3        &kp F12
 &trans            &trans            &trans            &trans            &trans          &trans             &trans       &trans                                                &trans
             >;
 
@@ -135,10 +191,11 @@
         };
 
         layer_3 {
+            display-name = "Navigation - Windows";
             bindings = <
-&kp ESC    &kp LC(LS(TAB))  &kp LG(LS(N3))  &kp LC(TAB)      &kp LG(T)                             &trans  &kp HOME        &kp UP_ARROW    &kp END          &trans
-&kp LG(S)  &kp LG(Z)        &kp LG(X)        &kp LG(C)        &kp LG(V)            &trans      &kp LA(LEFT_ARROW)  &trans  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp LA(RIGHT_ARROW)
-&trans     &kp LEFT_SHIFT   &kp LG(LS(Z))    &kp LG(W)        &kp DELETE           &trans    &trans              &trans  &kp DELETE      &kp PAGE_UP     &kp PAGE_DOWN    &trans
+&kp ESC    &kp LC(LS(TAB))  &kp PRINTSCREEN &kp LC(TAB)      &kp LC(T)                             &trans  &kp HOME        &kp UP_ARROW    &kp END          &trans
+&kp LC(S)  &kp LC(Z)        &kp LC(X)        &kp LC(C)        &kp LC(V)            &trans      &kp LA(LEFT_ARROW)  &trans  &kp LEFT_ARROW  &kp DOWN_ARROW  &kp RIGHT_ARROW  &kp LA(RIGHT_ARROW)
+&trans     &kp LEFT_SHIFT   &kp LC(Y)        &kp LC(W)        &kp DELETE           &trans    &trans              &trans  &kp DELETE      &kp PAGE_UP     &kp PAGE_DOWN    &trans
 &trans  &trans              &trans                  &trans                   &trans                   &trans    &trans  &trans                                                   &trans
             >;
 
@@ -146,17 +203,19 @@
         };
 
         layer_4 {
+            display-name = "Bluetooth";
             bindings = <
 &trans  &trans  &trans  &trans  &trans                         &bt BT_SEL 0  &bt BT_SEL 1  &bt BT_SEL 2  &bt BT_SEL 3  &bt BT_SEL 4
 &trans  &trans  &trans  &trans  &trans  &trans      &trans       &trans        &trans        &trans        &trans        &trans
-&trans  &trans  &trans  &trans  &trans  &trans      &trans       &trans        &trans        &trans        &trans        &bt BT_CLR
-&trans  &trans  &trans  &trans  &trans  &trans      &trans       &trans                                                  &bt BT_CLR_ALL
+&trans  &trans  &trans  &trans  &trans  &trans      &trans       &trans        &trans        &trans        &trans        &bt_clear_hold 0 0
+&trans  &trans  &trans  &trans  &trans  &trans      &trans       &trans                                                  &none
             >;
 
             sensor-bindings = <&scroll_up_down>;
         };
 
         MOUSE {
+            display-name = "Mouse";
             bindings = <
 &trans  &trans    &trans    &trans    &trans                    &trans  &trans    &trans    &trans    &trans
 &trans  &trans    &trans    &trans    &trans  &trans      &trans  &trans  &mkp MB1  &mkp MB3  &mkp MB2  &trans
@@ -168,6 +227,7 @@
         };
 
         SCROLL {
+            display-name = "Scroll";
             bindings = <
 &trans  &trans  &trans  &trans  &trans                      &trans  &trans  &trans  &trans  &trans
 &trans  &trans  &trans  &trans  &trans  &trans      &trans  &trans  &trans  &trans  &trans  &trans

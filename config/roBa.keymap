@@ -158,10 +158,10 @@
         default_layer {
             display-name = "Base - Windows JIS";
             bindings = <
-&kp Q             &kp W         &kp E         &kp R             &kp T                                               &kp Y        &kp U  &scroll_lt 6 I  &kp O    &lt 5 P
-&kp A             &kp S         &kp D         &kp F             &kp G        &kp ESC                 &kp EQUAL      &kp H        &kp J  &kp K           &kp L    &kp MINUS
-&mt LEFT_SHIFT Z  &kp X         &kp C         &kp V             &kp B        &kp TAB                 &kp SEMICOLON  &kp N        &kp M  &kp COMMA       &kp DOT  &mt LEFT_SHIFT SLASH
-&kp LCTRL         &kp LEFT_GUI  &kp LEFT_ALT  &lt 6 INT_HENKAN  &lt 2 SPACE  &lt 3 INT_MUHENKAN      &kp BACKSPACE  &lt 1 ENTER                                  &kp BACKSPACE
+&kp Q             &kp W         &kp E         &kp R        &kp T                                        &kp Y        &kp U  &scroll_lt 6 I  &kp O    &lt 5 P
+&kp A             &kp S         &kp D         &kp F        &kp G        &kp ESC          &kp EQUAL      &kp H        &kp J  &kp K           &kp L    &kp MINUS
+&mt LEFT_SHIFT Z  &kp X         &kp C         &kp V        &kp B        &kp TAB          &kp SEMICOLON  &kp N        &kp M  &kp COMMA       &kp DOT  &mt LEFT_SHIFT SLASH
+&kp LCTRL         &kp LEFT_GUI  &kp LEFT_ALT  &lt 6 LANG2  &lt 2 SPACE  &lt 3 LANG1      &kp BACKSPACE  &lt 1 ENTER                                  &kp BACKSPACE
             >;
 
             sensor-bindings = <&scroll_up_down>;
